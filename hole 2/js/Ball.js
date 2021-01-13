@@ -3,7 +3,7 @@ class Ball{
         this.x = x;
         this.y = y;
         this.r = r;
-        this.speedX = 25;   
+        this.speedX = 55;   
         this.color = "black";
         this.ctx = ctx;
         console.log("Ball is ready");

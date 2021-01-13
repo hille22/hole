@@ -8,3 +8,8 @@
 	-chosen
 	-action // et nom de l'animation
     -shrink, square, etc
+
+-player-2 choix de la key[]
+	-valide(boolean)
+		-next level
+		-restart

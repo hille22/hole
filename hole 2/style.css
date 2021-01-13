@@ -1,0 +1,156 @@
+@font-face {
+  font-family: SuisseMono;
+  src: url(font/SuisseEcalIntlMono-Regular.ttf) format("truetype");
+}
+
+#btn-container {
+  height: 100%;
+  position: inherit;
+}
+#btn-container2 {
+  height: 100%;
+  position: relative;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.choose-player {
+  background-color: white;
+  border: none;
+  font-family: SuisseMono;
+  color: black;
+  padding: 15px 52px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.choose-player:disabled {
+  border: none;
+  color: rgb(185, 185, 185);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.bottom-right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.top-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+.sound {
+  background-color: white;
+  border: none;
+  font-family: SuisseMono;
+  color: black;
+  padding: 15px 52px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+.button-draw {
+  background-color: white;
+  border: none;
+  font-family: SuisseMono;
+  color: black;
+  padding: 15px 52px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-validate {
+  background-color: transparent;
+  border: none;
+  font-family: SuisseMono;
+  color: white;
+  padding: 15px 52px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+canvas {
+  position: absolute;
+  z-index: 1;
+}
+
+.slider {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: khaki;
+  z-index: 100;
+}
+.slider .slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: 100;
+}
+.btn {
+  position: absolute;
+  z-index: 200;
+}
+#nextBt {
+  top: 70%;
+  left: 50%;
+  color: white;
+  background: transparent;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 50px;
+  position: absolute;
+  z-index: 200;
+}
+#prevBt {
+  color: white;
+  background: transparent;
+  top: 30%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 50px;
+  position: absolute;
+  z-index: 200;
+}
