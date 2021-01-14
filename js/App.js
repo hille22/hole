@@ -2,10 +2,13 @@ class App {
   constructor(ID) {
     this.ID = ID;
     this.win = false;
+    this.state = "start";
+    this.level = 0;
     this.loose = false;
+    this.outside = false;
     if (ID === "player-1") this.player1 = new Player_1(this.ctx);
     else if (ID === "player-2") this.player = new Player_2(this.ctx);
-
+    let CLICKED = false;
     this.setupCanvas();
   }
 
@@ -15,14 +18,9 @@ class App {
     this.canvas.height = window.innerHeight;
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext("2d");
-    
+
     // x, y, r, ctx
-    this.ball = new Ball(
-      window.innerWidth / 2,
-      window.innerHeight / 2,
-      20,
-      this.ctx
-    );
+    this.ball = new Ball(this.ctx);
 
     this.player1 = new Player_1(this.ctx);
 
@@ -36,48 +34,83 @@ class App {
 
     this.appHasStarted = false;
 
-    DATABASE.ref("player-1/outside").on(
-      "value",
-      this.onValueChanged.bind(this)
-    );
+    DATABASE.ref("player-1/").once("value", this.onValueChanged.bind(this));
   }
 
   draw() {
     this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    const buttonDraw = document.querySelector(".button-draw");
-    const buttonValidate = document.querySelector(".button-validate");
-    const sliderContainer = document.querySelector("#slider-container");
-    this.button.show();
+    if (this.state == "start") {
+      const buttonDraw = document.querySelector(".button-draw");
+      const buttonValidate = document.querySelector(".button-validate");
+      const sliderContainer = document.querySelector("#slider-container");
+      //console.log(this.ball);
 
-    if (this.ID === "player-1") {
-      this.ball.show();
-      buttonDraw.style.display = "inline";
-      if (this.win == true) {
-        
-        console.log("winnnn");
-        this.player1.levelWin();
+      if (this.ID === "player-1") {
+        this.ball.show();
+        this.ball.move();
+
+        //console.log(this.ball);
+        buttonDraw.style.display = "inline";
+
+        if (this.win == true) {
+          console.log("winnnn");
+          this.player1.levelWin();
+        }
+
+        DATABASE.ref("/player-1/loose").on("value", (snapshot) => {
+          this.loose = snapshot.val();
+        });
+
+        if (this.loose == true) {
+          //this.ball.resetBall();
+          //this.ball.move();
+          //SEND_MESSAGE("player-1/outside", false);
+
+          console.log("looooose");
+          this.player1.levelLoose();
+
+          //   if (this.ball.x > window.innerWidth) {
+          //     console.log("outside 2");
+
+          //     SEND_MESSAGE("player-1/outside", true);
+          //     SEND_MESSAGE("player-1/level", this.level);
+
+          // }
+        }
+        if (this.ball.x > window.innerWidth) {
+          if (this.level == 0) {
+            SEND_MESSAGE("player-1/outside", true);
+            SEND_MESSAGE("player-1/level", 1);
+            this.ball.hide();
+          }
+
+          DATABASE.ref("/player-1/level").on("value", (snapshot) => {
+            this.level = snapshot.val();
+          });
+
+          if (this.level == 1) {
+            SEND_MESSAGE("player-1/outside", false);
+          }
+          // SEND_MESSAGE("player-1/state", "1");
+        }
       }
-      if (this.ball.x > window.innerWidth) {
-        SEND_MESSAGE("player-1/outside", true);
-        SEND_MESSAGE("player-1/level", 1);
+
+      if (this.ID === "player-2") {
+        this.ball.hide();
+        this.player.show();
+        buttonValidate.style.display = "flex";
+        sliderContainer.style.display = "flex";
+        // buttonValidate.onclick = () => {
+        //   console.log("click");
+        //   SEND_MESSAGE("player-2/validate", true);
+        // };
       }
+      requestAnimationFrame(this.draw.bind(this));
     }
-
-    if (this.ID === "player-2") {
-      this.ball.hide();
-      this.player.show();
-      buttonValidate.style.display = "flex";
-      sliderContainer.style.display = "flex";
-      // buttonValidate.onclick = () => {
-      //   console.log("click");
-      //   SEND_MESSAGE("player-2/validate", true);
-      // };
-    }
-
-    requestAnimationFrame(this.draw.bind(this));
   }
 
   cliked(e) {
+    console.log(e);
     this.ball.move();
   }
 
@@ -86,18 +119,14 @@ class App {
     if (!this.appHasStarted) {
       this.appHasStarted = true;
       this.draw();
-      
-    } 
-      if (this.ID === "player-2") {
-        this.player.action();
-      }
-      if (this.ID === "player-1") {
-        
-       // console.log("winnnn");
-        this.player1.levelWin();
-      }
-     
-    
+    }
+    if (this.ID === "player-2") {
+      this.player.action();
+    }
+    if (this.ID === "player-1") {
+      // console.log("winnnn");
+      this.player1.levelWin();
+    }
   }
 }
 
@@ -111,6 +140,10 @@ window.onload = () => {
   const buttonDraw = document.querySelector(".button-draw");
   const buttonValidate = document.querySelector(".button-validate");
   const sliderContainer = document.querySelector("#slider-container");
+  const win = document.querySelector(".win");
+  const loose = document.querySelector(".loose");
+  loose.style.display = "none";
+  win.style.display = "none";
   buttonDraw.style.display = "none";
   buttonValidate.style.display = "none";
   sliderContainer.style.display = "none";
@@ -173,5 +206,6 @@ window.onload = () => {
     SEND_MESSAGE("player-1/outside", false);
     SEND_MESSAGE("player-1/win", false);
     SEND_MESSAGE("player-1/loose", false);
+    SEND_MESSAGE("player-1/state", "start");
   };
 };

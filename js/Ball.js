@@ -1,9 +1,11 @@
 class Ball{
-    constructor(x,y,r,ctx){
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.speedX = 55;   
+    constructor(ctx){
+        this.x =  window.innerWidth / 2;
+        this.y = window.innerHeight / 2;
+        this.r = 20;
+        this.speedX = 1;   
+        this.gravity = 0.15;
+        this.gravitySpeed = 0.5;
         this.color = "black";
         this.ctx = ctx;
         console.log("Ball is ready");
@@ -19,12 +21,15 @@ class Ball{
 
     
     move(){
-        this.x += this.speedX;
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX + this.gravitySpeed;
         
     }
 
-    move2(){
-        this.x + 50;
+    resetBall(){
+        this.x =  window.innerWidth / 2;
+        this.y = window.innerHeight / 2;
+        this.r = 20;
     }
 
     hide(){

@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
 
+    <script src="js/utils.js"></script>
     <script src="config/config.js"></script>
     <script src="js/Ball.js"></script>
     <script src="js/Player_1.js"></script>
@@ -45,13 +46,21 @@
     <div id="slider-container" class="sliderCtn">
       <button class="btn" id="prevBt">⯅</button>
       <div class="slider">
-        <img id="start-" name="slide" class="slide" />
+        <img name="slide" class="slide" />
       </div>
       <button class="btn" id="nextBt">⯆</button>
     </div>
 
     <div class="win">
-      <img id="start-" name="slide" class="win-anim" />
+      <p>win</p>
+      <button class="next-level" value="next-level">next level ⯈</button>
+      <img name="slide" class="win-slide" />
+    </div>
+
+    <div class="loose">
+      <p>loose</p>
+      <button class="restart" value="restart">restart ⯈</button>
+      <img name="slide" class="loose-slide" />
     </div>
   </body>
 </html>

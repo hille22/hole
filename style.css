@@ -112,7 +112,7 @@ canvas {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: khaki;
+  background-color: #000;
   z-index: 100;
 }
 .slider .slide {
@@ -153,4 +153,36 @@ canvas {
   font-size: 50px;
   position: absolute;
   z-index: 200;
+}
+
+.win{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  z-index: 100;
+}
+
+.loose{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 0, 0);
+  z-index: 100;
 }

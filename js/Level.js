@@ -2,7 +2,7 @@ class Level{
     constructor(ctx){
         
         this.ctx = ctx;
-        console.log("Level is ready");
+        //console.log("Level is ready");
     }
 
 
