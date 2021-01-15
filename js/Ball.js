@@ -18,9 +18,16 @@ class Ball{
         this.ctx.fill();
         this.ctx.closePath();
     }
+    
 
     
     move(){
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX + this.gravitySpeed;
+        
+    }
+
+    move2(){
         this.gravitySpeed += this.gravity;
         this.x += this.speedX + this.gravitySpeed;
         
@@ -30,12 +37,17 @@ class Ball{
         this.x =  window.innerWidth / 2;
         this.y = window.innerHeight / 2;
         this.r = 20;
+        this.speedX = 1;   
+        this.gravity = 0.15;
+        this.gravitySpeed = 0.5;
     }
 
     hide(){
         this.speedX = 0;
         this.x = -50;
         this.y = -50;
+        this.gravity = 0;
+        this.gravitySpeed = 0;
        
     }
 }

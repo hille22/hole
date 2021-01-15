@@ -1,5 +1,5 @@
 const IMAGES1 = [
-  "http://www.sololearn.com/uploads/slider/1.jpg",
+  "../img/intro.gif",
   "http://www.sololearn.com/uploads/slider/2.jpg",
   "http://www.sololearn.com/uploads/slider/3.jpg",
   "http://www.sololearn.com/uploads/slider/2.jpg",
@@ -16,7 +16,7 @@ class Player_2 {
     this.x = window.innerWidth;
     this.y = window.innerHeight;
     this.fillStyle = this.color;
-    this.color = "black";
+    this.color = "red";
     this.state = "start";
     this.addFBListeners();
     this.reset();
@@ -31,18 +31,21 @@ class Player_2 {
     });
     this.bg();
     if (this._action == true) {
+      DATABASE.ref("/player-1/level").on("value", (snapshot) => {
+        this.level = snapshot.val();
+      });
       if (this.level == 1) {
         this.levelOne();
         this._action = false;
         SEND_MESSAGE("player-1/state", "1");
       }
       if (this.level == 2) {
-        this.ctx.fillStyle = "red";
         this.levelTwo();
-        this.ctx.beginPath();
-        this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        this._action = false;
+        SEND_MESSAGE("player-1/state", "2");
       }
     }
+    
     if (this.level == 0 ) {
       const slide = document.querySelector(".slide");
       const slider = document.querySelector(".slider");
@@ -69,7 +72,7 @@ class Player_2 {
     this.sendMessage("/player-2", {
       chosen: true,
       action: null,
-      level:this.level,
+      init: null,
       validate: false,
     });
   }
@@ -98,16 +101,24 @@ class Player_2 {
 
     buttonValidate.onclick = () => {
       console.log("click");
+      const slide = document.querySelector(".slide");
+            const slider = document.querySelector(".slider");
+            const prevBt = document.querySelector("#prevBt");
+            const nextBt = document.querySelector("#nextBt");
+            slide.style.display = "none";
+            slider.style.display = "none";
+            prevBt.style.display = "none";
+            nextBt.style.display = "none";
       SEND_MESSAGE("player-2/validate", true);
       if (this.hasSelectedGoodImage()) {
         console.log("win");
 
         SEND_MESSAGE("player-1/win", true);
-        SEND_MESSAGE("player-1/loose", false);
+
       } else {
         console.log("loose");
         SEND_MESSAGE("player-1/loose", true);
-        SEND_MESSAGE("player-1/win", false);
+
       }
     };
 
@@ -159,6 +170,48 @@ class Player_2 {
 
 
   levelTwo() {
-    console.log("level 2");
+    console.log("level 1 load");
+    const buttonValidate = document.querySelector(".button-validate");
+    const slide = document.querySelector(".slide");
+    const slider = document.querySelector(".slider");
+    const prevBt = document.querySelector("#prevBt");
+    const nextBt = document.querySelector("#nextBt");
+    slide.style.display = "initial";
+    slider.style.display = "initial";
+    prevBt.style.display = "initial";
+    nextBt.style.display = "initial";
+
+    buttonValidate.onclick = () => {
+      console.log("click");
+      SEND_MESSAGE("player-2/validate", true);
+      if (this.hasSelectedGoodImage()) {
+        console.log("win");
+
+        SEND_MESSAGE("player-1/win", true);
+        //SEND_MESSAGE("player-1/loose", false);
+      } else {
+        console.log("loose");
+        SEND_MESSAGE("player-1/loose", true);
+        //SEND_MESSAGE("player-1/win", false);
+      }
+    };
+
+    this.selectImage(0);
+
+    //next image function
+    nextBt.addEventListener("click", (xy) => {
+      this.nextImage();
+      if (this.hasSelectedGoodImage()) {
+        console.log("win");
+      }
+    });
+
+    //prev image function
+    prevBt.addEventListener("click", (xy) => {
+      this.previousImage();
+      if (this.hasSelectedGoodImage()) {
+        console.log("win");
+      }
+    });
   }
 }
