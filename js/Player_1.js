@@ -2,7 +2,7 @@ class Player_1 {
   constructor(ctx) {
     this.ctx = ctx;
     this.directory = "player-1/";
-    this.level = 1;
+    this.level = 0;
     this.win = false;
     this.loose = false;
     this.fillStyle = this.color;

@@ -16,7 +16,7 @@ class Player_2 {
     this.x = window.innerWidth;
     this.y = window.innerHeight;
     this.fillStyle = this.color;
-    this.color = "red";
+    this.color = "black";
     this.state = "start";
     this.addFBListeners();
     this.reset();
