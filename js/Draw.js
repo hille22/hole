@@ -1,41 +1,144 @@
+
 class Draw {
-    constructor(x, y, w, h, ctx) {
-      this.x = x;
-      this.y = y;
-      this.w = w;
-      this.h = h;
-      this.ctx = ctx;
-      this.color = "red";
-      this.ID = Math.random() * 10;
-      document.addEventListener("click", this.send.bind(this));
+  constructor(ctx) {
+    console.log('App ready');
+    this.ctx = ctx;
+    this.database = firebase.database();
+
+    this.color = {
+      'r': Math.round(Math.random() * 255),
+      'g': Math.round(Math.random() * 255),
+      'b': Math.round(Math.random() * 255),
+    };
+
+     this.MOUSE = {
+      x:0,
+      y:0, 
     }
-    show() {
-      this.ctx.fillStyle = this.color;
-      this.ctx.fillRect(this.x, this.y, this.w, this.h);
-    }
-  
-    send() {
-    //   SEND_MESSAGE("SIZE_COLOR_CHANGE", {
-    //     color: `rgba(${Math.round(Math.random() * 255)},0,${Math.round(Math.random() * 255)},0.02)`,
-    //     w: this.w+20,
-    //     h: this.h+20, 
-    //     x : this.x-10,
-    //     y: this.y-10,
-      
-    //     id: this.ID,
-        
-    //   });
-    }
-  
-    changeColor(data) {
-    //   if (this.ID != data.id) {
-    //     this.color = data.color;
-    //     this.w = data.w;
-    //     this.h = data.h;
-    //     this.x = data.x;
-    //     this.y = data.y;
-        
-    //   }
-     }
-  
+    
+
+    this.UID = '_' + Math.random().toString(36).substr(2, 9);
+    // this.ctx.strokeStyle = 'rgb(255,0,0)';
+
+    window.addEventListener('mousedown', (e) => {
+     this.MOUSE.x = e.clientX;
+     this.MOUSE.y = e.clientY;
+     
+     this.touchStart(e);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      this.MOUSE.x = e.clientX;
+      this.MOUSE.y = e.clientY;
+      this.touchMove(e);
+    });
+
+    //window.addEventListener('mouseup', mouseUp);
+    window.addEventListener('mouseup', (e) => {
+      this.MOUSE.x = e.clientX;
+      this.MOUSE.y = e.clientY;
+      this.touchEnd(e);
+    });
+
+    window.addEventListener('touchstart', (e) => {
+      this.MOUSE.x = e.touches[0].clientX;
+      this.MOUSE.y = e.touches[0].clientY;
+      this.touchStart(e);
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      this.MOUSE.x = e.touches[0].clientX;
+      this.MOUSE.y = e.touches[0].clientY;
+      this.touchMove(e);
+    });
+
+    window.addEventListener('touchend', () => {
+      this.MOUSE.x = e.touches[0].clientX;
+      this.MOUSE.y = e.touches[0].clientY;
+      touchEnd(e);
+    });
+
+    
+    this.addDatabaseListener();
+
+    this.isDrawing = false;
+    this.count = 0;
   }
+
+  touchStart(e) {
+    console.log('mouse down', e);
+    this.isDrawing = true;
+    // this.ctx.beginPath();
+    // this.ctx.moveTo(e.x, e.y);
+  }
+
+  touchMove(e) {
+    if (this.isDrawing) {
+      //console.log('mouse move');
+      this.send('DRAWINGS/' + this.UID + '/' + Date.now(), {
+        'x': e.x,
+        'y': e.y,
+        'color': this.color,
+      });
+    }
+  }
+
+  touchEnd(e) {
+    //console.log('mouse up');
+    this.isDrawing = false;
+    this.send('DRAWINGS/' + this.UID, null);
+  }
+
+  send(path, value) {
+    const json = {'data': value};
+    this.database.ref(path).set(json);
+  }
+
+  getMousePos(canvasDom, mouseEvent) {
+		var rect = canvasDom.getBoundingClientRect();
+		return {
+			x: mouseEvent.clientX - rect.left,
+			y: mouseEvent.clientY - rect.top
+		};
+  }
+  
+  getTouchPos(canvasDom, touchEvent) {
+		var rect = canvasDom.getBoundingClientRect();
+		return {
+			x: touchEvent.touches[0].clientX - rect.left,
+			y: touchEvent.touches[0].clientY - rect.top
+    };
+    
+
+    
+	}
+
+
+
+
+  addDatabaseListener() {
+    this.database.ref('DRAWINGS').on('value', (snapshot) => {
+      // console.log(snapshot.val());
+      this.drawings = snapshot.val();
+      //console.log(this.drawings);
+      for (const user in this.drawings) {
+        const points = Object.keys(this.drawings[user]);
+        if (points.length >= 2) {
+          //console.log(points);
+          this.ctx.beginPath();
+          const data = this.drawings[user][points[0]].data;
+          this.ctx.strokeStyle = 'red';
+          this.ctx.moveTo(data.x, data.y);
+          for (let i = 1; i < points.length; i++) {
+            const data2 = this.drawings[user][points[i]].data;
+            this.ctx.lineTo(data2.x, data2.y);
+          }
+          this.ctx.stroke();
+          this.ctx.closePath();
+        }
+      }
+
+    })
+  }
+
+};

@@ -14,14 +14,14 @@ class Level {
   levelInit() {
     
     if (this._init == true) {
-    console.log(this.ball.x + "FIRST");
+    //console.log(this.ball.x + "FIRST");
    
     this.ball.show();
     this.ball.move();
     if (this.level == 0) {  
         
         
-      if (this.ball.x > window.innerWidth) {
+      if (this.ball.x > window.innerWidth+50) {
         this._init = false; 
         SEND_MESSAGE("player-1/outside", true);
         SEND_MESSAGE("player-1/state", "1");

@@ -12,11 +12,19 @@ class Ball{
     }
 
     show(){
+        this.ctx.fillStyle = "white";
+        this.ctx.beginPath();
+        this.ctx.rect(0, 0, window.innerWidth ,window.innerHeight);
+        this.ctx.fill();
+        this.ctx.closePath();
+
         this.ctx.fillStyle = this.color;
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI, false);
         this.ctx.fill();
         this.ctx.closePath();
+
+        
     }
     
 

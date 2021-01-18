@@ -18,11 +18,13 @@ class App {
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext("2d");
 
+
+
     this.ball = new Ball(this.ctx);
     this.player1 = new Player_1(this.ctx);
     this.player = new Player_2(this.ctx);
     this.levels = new Level(this.ctx);
-    this.button = new Draw(this.w / 2, this.h / 2, 40, 40, this.ctx);
+    
 
     this.appHasStarted = false;
 
@@ -30,13 +32,15 @@ class App {
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    
+    //this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     
     if (this.state == "start") {
+      this.playerDraw();
       const buttonDraw = document.querySelector(".button-draw");
       const buttonValidate = document.querySelector(".button-validate");
       const sliderContainer = document.querySelector("#slider-container");
-     
+      
       if (this.ID === "player-1" && this.level == 0) {
         this.levels.levelInit();
 
@@ -58,11 +62,10 @@ class App {
           
         }     
       }
-      
-
 
       if (this.ID === "player-2") {
         this.ball.hide();
+        this.draws = new Draw(this.ctx);
         this.player.show();
         buttonValidate.style.display = "flex";
         sliderContainer.style.display = "flex";
@@ -71,14 +74,25 @@ class App {
     }
   }
 
+  playerDraw(){
+    
+    const buttonDraw = document.querySelector(".button-draw");
+    buttonDraw.onclick = () => {
+      console.log("click");
+      this.draws = new Draw(this.ctx);
+      this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    };
+    
+  }
 
   onValueChanged(snapshot) {
-
+    
     if (!this.appHasStarted) {
       this.appHasStarted = true;
       this.draw();
     }
     if (this.ID === "player-2") {
+     
       this.player.action();
     }
     if (this.ID === "player-1") {
@@ -156,6 +170,7 @@ window.onload = () => {
   });
 
   window.onbeforeunload = (e) => {
+    SEND_MESSAGE("DRAWINGS", 0);
     SEND_MESSAGE("player-1/chosen", false);
     SEND_MESSAGE("player-1/level", 0);
     SEND_MESSAGE("player-2/chosen", false);
