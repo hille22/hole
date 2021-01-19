@@ -18,13 +18,17 @@ class Level {
     this.ball.move();
     this.hole.show();
     this.hole.move();
-    
-   
     if (this.level == 0) {
-    
       if (this.ball.x > window.innerWidth + 50) {
         //this._init = false;
-        
+        const slide = document.querySelector(".slide");
+        const slider = document.querySelector(".slider");
+        const prevBt = document.querySelector("#prevBt");
+        const nextBt = document.querySelector("#nextBt");
+        slide.style.display = "initial";
+        slider.style.display = "initial";
+        prevBt.style.display = "initial";
+        nextBt.style.display = "initial";
 
         
         SEND_MESSAGE("player-1/outside", true);

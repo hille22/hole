@@ -1,8 +1,8 @@
 const IMAGES1 = [
-  "../img/level_1/0.gif",
   "../img/level_1/1.gif",
-  "../img/level_1/2.gif",
+  "../img/level_1/0.gif",
   "../img/level_1/3.gif",
+  "../img/level_1/2.gif",
 ];
 
 class Player_2 {
@@ -11,7 +11,7 @@ class Player_2 {
     this.directory = "player-2/";
     this.level = 0;
     this.win = false;
-    this.winIndex = 3;
+    this.winIndex = 1;
     this.loose = false;
     this.x = window.innerWidth;
     this.y = window.innerHeight;
@@ -34,7 +34,6 @@ class Player_2 {
   }
 
   show() {
-    
     DATABASE.ref("/player-1/level").on("value", (snapshot) => {
       this.level = snapshot.val();
     });
@@ -43,14 +42,11 @@ class Player_2 {
     if (this._action == true) {
       DATABASE.ref("/player-1/level").on("value", (snapshot) => {
         this.level = snapshot.val();
-        
       });
       if (this.level == 1) {
         this.levelOne();
-        
         this._action = false;
         SEND_MESSAGE("player-1/state", "1");
-   
       }
       if (this.level == 2) {
         this.levelTwo();

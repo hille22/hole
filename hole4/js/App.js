@@ -14,6 +14,7 @@ class App {
     this.ctx.rect(0, 0, this.x, this.y);
     this.ctx.fill();
     this.ctx.closePath();
+    
   }
 
   setupCanvas() {
@@ -29,6 +30,7 @@ class App {
     this.player = new Player_2(this.ctx);
     this.levels = new Level(this.ctx);
 
+    
     this.click = false;
     this.appHasStarted = false;
     console.log(this.click);
@@ -38,10 +40,12 @@ class App {
   draw() {
     const startDraw = document.querySelector("body");
 
+    
+
     startDraw.onclick = () => {
-      this.click = true;
+     this.click = true;
       console.log("click");
-      console.log(this.click);
+      console.log(this.click);     
     };
 
     if (this.ID === "player-1") {
@@ -49,7 +53,10 @@ class App {
     }
     if (this.ID === "player-2") {
       this.player.bg();
+
     }
+    
+    
 
     if (this.click == true) {
       //this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -67,7 +74,6 @@ class App {
           DATABASE.ref("player-1/win").on("value", (snapshot) => {
             this.win = snapshot.val();
           });
-
           if (this.win == true) {
             this.levels.levelWin();
           }
@@ -78,6 +84,7 @@ class App {
 
           if (this.loose == true) {
             this.levels.levelLoose();
+            
           }
         }
 
@@ -88,6 +95,7 @@ class App {
           buttonValidate.style.display = "flex";
           sliderContainer.style.display = "flex";
         }
+        
       }
     }
     requestAnimationFrame(this.draw.bind(this));

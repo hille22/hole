@@ -1,0 +1,15 @@
+-player-1
+	-chosen
+	-level number
+	-drawing
+    -[{x, y, "moveTo"}, {x, y, "lineTo"}
+	-win/fail
+-player-2
+	-chosen
+	-action // et nom de l'animation
+    -shrink, square, etc
+
+-player-2 choix de la key[]
+	-valide(boolean)
+		-next level
+		-restart
